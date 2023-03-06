@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -77,5 +78,23 @@ public class BookServiceTest {
         assertThat(bookResponseDtoList.get(0).getAuthor()).isEqualTo("메타코딩");
         assertThat(bookResponseDtoList.get(1).getTitle()).isEqualTo("spring강의");
         assertThat(bookResponseDtoList.get(1).getAuthor()).isEqualTo("유현");
+    }
+
+    @Test
+    public void 책한건보기_테스트() {
+        //given
+        Long id = 1L;
+        Book book = new Book(1L,"junit","dbgus");
+        Optional<Book> bookOP = Optional.of(book);
+
+        //stub
+        when(bookRepository.findById(id)).thenReturn(bookOP);
+
+        //when
+        BookResponseDto bookResponseDto = bookService.책한건보기(id);
+
+        //then
+        assertThat(bookResponseDto.getTitle()).isEqualTo("junit");
+        assertThat(bookResponseDto.getAuthor()).isEqualTo("dbgus");
     }
 }
