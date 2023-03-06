@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,7 +16,19 @@ public class BookRepositoryTest {
     // 1. 책 등록
     @Test
     public void 책등록_test() {
-        log.info("책등록_test 실행");
+        //given (데이터 준비)
+        String title = "junit5";
+        String author = "유현";
+        Book book = Book.builder()
+                .title(title)
+                .author(author)
+                .build();
+        //when (테스트 실행)
+        Book bookPS = bookRepository.save(book);
+
+        // then(검증)
+        Assertions.assertThat(bookPS.getTitle()).isEqualTo("junit5");
+        Assertions.assertThat(bookPS.getAuthor()).isEqualTo("유현");
     }
 
 
