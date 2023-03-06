@@ -1,9 +1,11 @@
 package com.example.demo.dto;
 
 import com.example.demo.domain.Book;
+import lombok.Getter;
 import lombok.Setter;
 
 @Setter
+@Getter
 public class BookSaveRequestDto {
     private String title;
     private String author;
