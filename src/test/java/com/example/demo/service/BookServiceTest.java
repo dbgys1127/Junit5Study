@@ -97,4 +97,28 @@ public class BookServiceTest {
         assertThat(bookResponseDto.getTitle()).isEqualTo("junit");
         assertThat(bookResponseDto.getAuthor()).isEqualTo("dbgus");
     }
+    @Test
+    public void 책수정하기_테스트() {
+        //given
+        Long id = 1L;
+        BookSaveRequestDto dto = new BookSaveRequestDto();
+        dto.setTitle("spring");
+        dto.setAuthor("dbgys1127");
+
+        //stub
+        Book book = Book.builder()
+                .id(1L)
+                .title("junit")
+                .author("dbgys")
+                .build();
+        Optional<Book> bookOP = Optional.of(book);
+        when(bookRepository.findById(id)).thenReturn(bookOP);
+
+        //when
+        BookResponseDto bookResponseDto=bookService.책수정하기(id, dto);
+
+        //then
+        assertThat(bookResponseDto.getTitle()).isEqualTo("spring");
+        assertThat(bookResponseDto.getAuthor()).isEqualTo("dbgys1127");
+    }
 }
