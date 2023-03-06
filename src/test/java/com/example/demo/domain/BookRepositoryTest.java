@@ -3,11 +3,15 @@ package com.example.demo.domain;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
+
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -74,6 +78,7 @@ public class BookRepositoryTest {
     }
     // 3. 책 한건 보기
     @Test
+    @Sql("classpath:db/tableInit.sql")
     public void 책한건보기_test() {
         String title = "junit";
         String author = "dbgys";
@@ -86,7 +91,21 @@ public class BookRepositoryTest {
         assertThat(bookPS.getAuthor()).isEqualTo(author);
     }
 
-    // 4. 책 수정
+    // 4. 책 삭제
+    @Test
+    @Sql("classpath:db/tableInit.sql")
+    public void 책삭제_test() {
+        //given
+        Long id = 1L;
 
-    // 5. 책 삭제
+        //when
+        bookRepository.deleteById(id);
+
+        //then
+        Optional<Book> bookPS = bookRepository.findById(id);
+        assertThat(bookPS).isEmpty();
+    }
+
+
+    // 5. 책 수정
 }
