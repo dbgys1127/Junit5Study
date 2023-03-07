@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -74,6 +75,7 @@ public class BookApiControllerTest {
     }
 
     @Test
+    @Sql("classpath:db/tableInit.sql")
     public void getBookList_test() {
         //given
 
@@ -85,6 +87,25 @@ public class BookApiControllerTest {
         DocumentContext dc = JsonPath.parse(response.getBody());
         Integer code = dc.read("$.code");
         String title = dc.read("$.body.items[0].title");
+
+        assertThat(code).isEqualTo(1);
+        assertThat(title).isEqualTo("junit");
+    }
+
+    @Test
+    @Sql("classpath:db/tableInit.sql")
+    public void getBookOne_test() {
+        //given
+        Long id = 1L;
+
+        //when
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = rt.exchange("/api/v1/book/"+id, HttpMethod.GET, request, String.class);
+
+        //then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+        Integer code = dc.read("$.code");
+        String title = dc.read("$.body.title");
 
         assertThat(code).isEqualTo(1);
         assertThat(title).isEqualTo("junit");
