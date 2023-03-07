@@ -35,7 +35,6 @@ public class BookApiController {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
             }
-            log.info("error {}",errorMap.toString());
             throw new RuntimeException(errorMap.toString());
         }
         BookResponseDto bookResponseDto=bookService.책등록하기(bookSaveRequestDto);
@@ -61,7 +60,15 @@ public class BookApiController {
         return new ResponseEntity<>(CMRespDto.builder().code(1).msg("글 삭제하기 성공").body(null).build(),HttpStatus.OK);
     }
     //5. 책수정하기
-    public ResponseEntity<?> updateBook() {
-        return null;
-    }
+    @PatchMapping("api/v1/book/{id}")
+    public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody @Valid BookSaveRequestDto bookSaveRequestDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+            }
+            throw new RuntimeException(errorMap.toString());
+        }
+        BookResponseDto bookResponseDto=bookService.책수정하기(id, bookSaveRequestDto);
+        return new ResponseEntity<>(CMRespDto.builder().code(1).msg("글 수정하기 성공").body(bookResponseDto).build(),HttpStatus.OK);    }
 }
