@@ -110,4 +110,23 @@ public class BookApiControllerTest {
         assertThat(code).isEqualTo(1);
         assertThat(title).isEqualTo("junit");
     }
+
+    @Test
+    @Sql("classpath:db/tableInit.sql")
+    public void deleteBook_test() {
+        //given
+        Long id = 1L;
+
+        //when
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = rt.exchange("/api/v1/book/"+id, HttpMethod.DELETE, request, String.class);
+
+        //then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+        Integer code = dc.read("$.code");
+        String msg = dc.read("$.msg");
+
+        assertThat(code).isEqualTo(1);
+        assertThat(msg).isEqualTo("글 삭제하기 성공");
+    }
 }
