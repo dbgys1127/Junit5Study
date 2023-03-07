@@ -68,8 +68,8 @@ public class BookServiceTest {
         //then(검증)
         assertThat(bookListResponseDto.getItems().get(0).getTitle()).isEqualTo("junit강의");
         assertThat(bookListResponseDto.getItems().get(0).getAuthor()).isEqualTo("메타코딩");
-        assertThat(bookListResponseDto.getItems().get(0).getTitle()).isEqualTo("spring강의");
-        assertThat(bookListResponseDto.getItems().get(0).getAuthor()).isEqualTo("유현");
+        assertThat(bookListResponseDto.getItems().get(1).getTitle()).isEqualTo("spring강의");
+        assertThat(bookListResponseDto.getItems().get(1).getAuthor()).isEqualTo("유현");
     }
 
     @Test
