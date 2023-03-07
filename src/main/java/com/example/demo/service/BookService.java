@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Book;
 import com.example.demo.domain.BookRepository;
+import com.example.demo.dto.response.BookListResponseDto;
 import com.example.demo.dto.response.BookResponseDto;
 import com.example.demo.dto.request.BookSaveRequestDto;
 import com.example.demo.util.MailSender;
@@ -33,11 +34,14 @@ public class BookService {
     }
 
     //2. 책목록보기
-    public List<BookResponseDto> 책목록보기() {
-        return bookRepository.findAll().stream()
+    public BookListResponseDto 책목록보기() {
+        List<BookResponseDto> dtos = bookRepository.findAll().stream()
 //                .map((bookPS -> new BookResponseDto().toDto(bookPS)))
                 .map(Book::toDto)
                 .collect(Collectors.toList());
+
+        BookListResponseDto bookListResponseDto = BookListResponseDto.builder().bookList(dtos).build();
+        return bookListResponseDto;
     }
 
     //3. 책한건보기

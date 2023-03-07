@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Book;
 import com.example.demo.domain.BookRepository;
+import com.example.demo.dto.response.BookListResponseDto;
 import com.example.demo.dto.response.BookResponseDto;
 import com.example.demo.dto.request.BookSaveRequestDto;
 import com.example.demo.util.MailSender;
@@ -61,18 +62,14 @@ public class BookServiceTest {
         when(bookRepository.findAll()).thenReturn(books);
 
         //when(실행)
-        List<BookResponseDto> bookResponseDtoList = bookService.책목록보기();
+        BookListResponseDto bookListResponseDto = bookService.책목록보기();
 
-        //log
-        bookResponseDtoList.stream().forEach((dto)->{
-            log.info("dto.getId() = {}",dto.getId());
-        });
 
         //then(검증)
-        assertThat(bookResponseDtoList.get(0).getTitle()).isEqualTo("junit강의");
-        assertThat(bookResponseDtoList.get(0).getAuthor()).isEqualTo("메타코딩");
-        assertThat(bookResponseDtoList.get(1).getTitle()).isEqualTo("spring강의");
-        assertThat(bookResponseDtoList.get(1).getAuthor()).isEqualTo("유현");
+        assertThat(bookListResponseDto.getItems().get(0).getTitle()).isEqualTo("junit강의");
+        assertThat(bookListResponseDto.getItems().get(0).getAuthor()).isEqualTo("메타코딩");
+        assertThat(bookListResponseDto.getItems().get(0).getTitle()).isEqualTo("spring강의");
+        assertThat(bookListResponseDto.getItems().get(0).getAuthor()).isEqualTo("유현");
     }
 
     @Test
